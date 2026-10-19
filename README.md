@@ -1,12 +1,17 @@
 # DeepSeek Harness Desktop（dsh 0.2.x 适配版）
 
+**简体中文** | [English](./README.en.md)
+
 > [!IMPORTANT]
 > 非官方社区项目，与 DeepSeek 无隶属关系。基于 [DreamToRiver/deepseek-harness-desktop](https://github.com/DreamToRiver/deepseek-harness-desktop) 修改，感谢原作者的出色工作。
 >
 > **本版本的核心价值：内置 [DeepSeek Harness (dsh)](https://github.com/deepseek-ai/deepseek-harness) `0.2.0-rc.2` 内核**，修复了上游在 dsh 0.2.x 下的致命兼容问题。
+>
+> **🤖 开箱即用多智能体团队**：本版额外内置 **Agent Teams 多智能体协作插件**（`@nanmicoder/dsh-agent-teams`）——一个队长 Agent 带多个成员 Agent **同时并行干活**，装完即用，零额外配置。详见[下文](#-多智能体团队agent-teams-本版内置)。
 
 [![Release](https://img.shields.io/badge/Download-v0.2.0-blue)](../../releases/download/v0.2.0/DeepSeek-Harness-Setup-0.2.0.exe)
 [![dsh](https://img.shields.io/badge/dsh-0.2.0--rc.2-green)](https://www.npmjs.com/package/@deepseek-ai/dsh)
+[![Agent Teams](https://img.shields.io/badge/%F0%9F%A4%96_Agent--Teams-%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E5%86%85%E7%BD%AE-8A2BE2)](#-多智能体团队agent-teams-本版内置)
 [![Electron](https://img.shields.io/badge/Electron-43.4.0-orange)](https://www.electronjs.org/)
 [![Node](https://img.shields.io/badge/Node-24.19.0-brightgreen)](https://nodejs.org/)
 ![Platform](https://img.shields.io/badge/Windows-10%20%7C%2011%20x64-0078D4?logo=windows11)
@@ -18,10 +23,34 @@
 本项目把它封装成**双击即用的 Windows 桌面应用**：
 
 - 双击图标 → 自动拉起内置 dsh 服务（`--port 0` 动态端口，永不冲突）→ 窗口直接进入 DSH 界面
+- **多智能体团队开箱即用**：内置 Agent Teams 插件，多个 Agent 组队并行工作（见下节）
 - 关闭窗口最小化到系统托盘（后台服务继续运行），托盘右键完全退出
 - **零预装环境**：安装包内置 Electron 43.4.0 + Node 24.19.0 + dsh 完整运行时，不需要装 Node.js，不需要终端
 - **与命令行版共享 `~/.dsh`**：API Key、模型配置、会话历史、已装插件全部沿用，两个入口可混用
 - 首次启动引导配置 API Key（已配置过则自动跳过）；服务异常退出可一键"重新启动"；NSIS 中文安装向导
+
+## 🤖 多智能体团队（Agent Teams，本版内置）
+
+本版在 web profile 中**预装了 [Agent Teams 多智能体协作插件](https://github.com/NanmiCoder/dsh-agent-teams)（`@nanmicoder/dsh-agent-teams@0.1.25`）**——这是 dsh 生态里最重量级的协作插件之一，装完即可使用，不需要额外下载或配置。
+
+**它能做什么**：你说一个任务，队长（Lead）Agent 自动拆解成多个子任务，派出多个成员 Agent **同时并行工作**，最后汇总成一份整合报告。适合：
+
+- **多视角评审**：让一个团队同时从性能、安全、产品三个角度审查代码/方案，一份报告收齐
+- **并行调研**：多个 Agent 分头查资料、读文档、跑验证，缩短总耗时
+- **分角色协作**：产品/开发/测试各一个 Agent，按角色对话推进任务
+
+**怎么用**：打开桌面版，直接用自然语言下令即可，例如：
+
+```text
+Use AgentTeams to review this project from performance, security, and product
+perspectives. Return one consolidated report.
+```
+
+（也支持中文表述，队长会自动理解组队意图）
+
+**在哪里看进度**：Web UI **右上角的活动面板**实时展示每个成员 Agent 的状态与输出；团队状态落盘在工作区的 `/.agent-teams/` 目录，可追溯。
+
+> 小贴士：一个队长同一时间只带一个活跃团队；成员 Agent 空闲时会话内容持久化保存。更多玩法见插件仓库 [NanmiCoder/dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams)。
 
 ## 为什么需要这个 fork
 
@@ -37,6 +66,7 @@ dsh **0.2.x 引入了两个破坏性变更**，导致所有基于 0.1.x 的桌�
 | 项目 | 上游 DreamToRiver v0.1.1 | 本版 v0.2.0 |
 |---|---|---|
 | 内置 dsh 内核 | 0.1.0-rc.6 | **0.2.0-rc.2**（2026-09-29 latest） |
+| **多智能体团队** | 无 | ✅ **内置 Agent Teams 插件**（`@nanmicoder/dsh-agent-teams@0.1.25`），多 Agent 并行协作开箱即用 |
 | token 认证适配 | ❌ 固定 URL，0.2.x 下白屏 | ✅ `main.js` URL 正则捕获完整 `?token=` 地址（含单测验证 0.1.x/0.2.x 双兼容） |
 | 浏览器双开 | dsh 默认拉起系统浏览器 | ✅ spawn 增加 `--no-open`，桌面壳场景禁止双开 |
 | 内置 Node | 24（旧 minor） | 24.19.0 |
@@ -117,6 +147,7 @@ npm run dist        # 产物: dist/DeepSeek-Harness-Setup-<version>.exe
 
 - [DreamToRiver/deepseek-harness-desktop](https://github.com/DreamToRiver/deepseek-harness-desktop) —— 本项目基于其架构与代码修改，核心贡献（stdout URL 解析、托盘、生命周期管理、NSIS 向导）均来自原作者
 - [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) —— 上游 Agent 运行时（MIT）
+- [NanmiCoder/dsh-agent-teams](https://github.com/NanmiCoder/dsh-agent-teams) —— 多智能体团队插件（本版预装）
 - [huanshi2/dsh-desktop](https://github.com/huanshi2/dsh-desktop)、[huangj17/deepseek-harness-desktop](https://github.com/huangj17/deepseek-harness-desktop) —— 社区同类项目，选型调研参考
 
 ## 许可说明
