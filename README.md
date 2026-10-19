@@ -76,15 +76,11 @@ dsh **0.2.x 引入了两个破坏性变更**，导致所有基于 0.1.x 的桌�
 
 ## 下载安装
 
-前往 [Releases](../../releases) 下载 `DeepSeek-Harness-Setup-0.2.0.exe`（约 226MB）。
+前往 [Releases](../../releases) 下载 **单文件** `DeepSeek-Harness-Setup-0.2.0.exe`（约 226MB）。
 
-> **当前 Release 采用分卷上传**（单文件 226MB 在慢速上行下会被 GitHub 服务端超时掐断，见 Release notes）。下载 **5 个分卷**（`DSH-Setup-0.2.0.exe.part.00.part` ~ `part.04.part`）+ `merge-parts.cmd` 合并脚本，放在**同一目录**双击 `merge-parts.cmd` 即自动合并并校验。命令行方式：
+> 完整包 SHA256：`c23182dce402f9c88f7ee0395273c75fc87a04787d6087970d146272bef5b603`（可选校验：`certutil -hashfile DeepSeek-Harness-Setup-0.2.0.exe SHA256`）
 >
-> ```cmd
-> copy /b "DSH-Setup-0.2.0.exe.part.00.part"+"DSH-Setup-0.2.0.exe.part.01.part"+"DSH-Setup-0.2.0.exe.part.02.part"+"DSH-Setup-0.2.0.exe.part.03.part"+"DSH-Setup-0.2.0.exe.part.04.part" "DeepSeek-Harness-Setup-0.2.0.exe"
-> ```
->
-> 完整包 SHA256：`c23182dce402f9c88f7ee0395273c75fc87a04787d6087970d146272bef5b603`（合并后用 `certutil -hashfile DeepSeek-Harness-Setup-0.2.0.exe SHA256` 校验）
+> **备用方案**：Release 同时提供 5 个分卷（`DSH-Setup-0.2.0.exe.part.00.part` ~ `part.04.part`）+ `merge-parts.cmd` 合并脚本——单文件直链不稳时，把 6 个文件放到**同一目录**双击 `merge-parts.cmd`，即可合并出同一安装包（分卷由仓库的 GitHub Action 自动合并上传，`copy /b` 命令行方式见 Release notes）。
 
 1. 双击运行安装向导（简体中文，per-user 安装**无需管理员权限**，可选安装目录）
 2. 若 Windows SmartScreen 弹出"已保护你的电脑"——因未购买代码签名证书，属正常现象，点 **更多信息 → 仍要运行**

@@ -76,15 +76,11 @@ Everything else (tray, process-tree cleanup, crash recovery, Chinese installer, 
 
 ## Download & install
 
-Grab `DeepSeek-Harness-Setup-0.2.0.exe` (~226MB) from [Releases](../../releases).
+Grab the **single file** `DeepSeek-Harness-Setup-0.2.0.exe` (~226MB) from [Releases](../../releases).
 
-> **The current Release is provided as split volumes** (a single 226MB file gets killed by GitHub's server-side upload timeout on slow uplinks — see the release notes). Download the **5 volumes** (`DSH-Setup-0.2.0.exe.part.00.part` ~ `part.04.part`) plus the `merge-parts.cmd` merger into the **same folder** and double-click `merge-parts.cmd` to merge and verify automatically. Command line alternative:
+> Full-file SHA256: `c23182dce402f9c88f7ee0395273c75fc87a04787d6087970d146272bef5b603` (optional check: `certutil -hashfile DeepSeek-Harness-Setup-0.2.0.exe SHA256`)
 >
-> ```cmd
-> copy /b "DSH-Setup-0.2.0.exe.part.00.part"+"DSH-Setup-0.2.0.exe.part.01.part"+"DSH-Setup-0.2.0.exe.part.02.part"+"DSH-Setup-0.2.0.exe.part.03.part"+"DSH-Setup-0.2.0.exe.part.04.part" "DeepSeek-Harness-Setup-0.2.0.exe"
-> ```
->
-> Full-file SHA256: `c23182dce402f9c88f7ee0395273c75fc87a04787d6087970d146272bef5b603` (verify with `certutil -hashfile DeepSeek-Harness-Setup-0.2.0.exe SHA256`)
+> **Fallback**: the Release also ships 5 volumes (`DSH-Setup-0.2.0.exe.part.00.part` ~ `part.04.part`) plus the `merge-parts.cmd` merger — if the single-file link is flaky for you, drop all 6 files into the **same folder** and double-click `merge-parts.cmd` to rebuild the identical installer (the volumes are merged and uploaded automatically by the repo's GitHub Action; see the release notes for the `copy /b` command-line variant).
 
 1. Run the installer (Simplified Chinese wizard, per-user install **without admin rights**, custom directory allowed)
 2. If Windows SmartScreen says "Windows protected your PC" — expected for unsigned builds, click **More info → Run anyway**
