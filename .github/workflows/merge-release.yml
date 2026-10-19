@@ -1,0 +1,42 @@
+name: Merge split volumes into single installer
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download split volumes from release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download "${{ github.event.release.tag_name || 'v0.2.0' }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'DSH-Setup-*.exe.part.*' \
+            --dir parts
+          ls -la parts/
+
+      - name: Merge volumes and verify SHA256
+        working-directory: parts
+        run: |
+          cat DSH-Setup-0.2.0.exe.part.00.part \
+              DSH-Setup-0.2.0.exe.part.01.part \
+              DSH-Setup-0.2.0.exe.part.02.part \
+              DSH-Setup-0.2.0.exe.part.03.part \
+              DSH-Setup-0.2.0.exe.part.04.part > DeepSeek-Harness-Setup-0.2.0.exe
+          echo "c23182dce402f9c88f7ee0395273c75fc87a04787d6087970d146272bef5b603  DeepSeek-Harness-Setup-0.2.0.exe" | sha256sum -c -
+          ls -la DeepSeek-Harness-Setup-0.2.0.exe
+
+      - name: Upload merged installer to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ github.event.release.tag_name || 'v0.2.0' }}"
+          gh release upload "$TAG" parts/DeepSeek-Harness-Setup-0.2.0.exe --clobber --repo "$GITHUB_REPOSITORY"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[] | [.name, .size, .state] | @tsv'
